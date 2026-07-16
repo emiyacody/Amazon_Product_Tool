@@ -114,8 +114,12 @@ async def analyze_endpoint(req: AnalyzeRequest):
             
     # 4. Invoke Gemini analyzer with requested style
     print(f"Invoking Gemini analyzer with style: {style_name}...")
-    analyzer = ProductAnalyzer()
-    analysis_result = analyzer.analyze(scraped_data, style=style_name)
+    try:
+        analyzer = ProductAnalyzer()
+        analysis_result = analyzer.analyze(scraped_data, style=style_name)
+    except Exception as e:
+        print(f"AI analysis exception: {e}")
+        raise HTTPException(status_code=500, detail=f"AI analysis failed: {str(e)}")
     
     if "error" in analysis_result:
         raise HTTPException(status_code=500, detail=f"AI analysis failed: {analysis_result['error']}")

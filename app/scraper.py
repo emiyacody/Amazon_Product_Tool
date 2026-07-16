@@ -22,48 +22,53 @@ class AmazonScraper:
         """
         Scrapes an Amazon product URL using Playwright and returns extracted details.
         """
-        async with async_playwright() as p:
-            # Launch browser in headless mode
-            browser = await p.chromium.launch(headless=True)
-            context = await browser.new_context(
-                user_agent=self.user_agents[0],
-                viewport={"width": 1280, "height": 800}
-            )
-            page = await context.new_page()
-            
-            # Set extra headers to simulate a normal browser request
-            await page.set_extra_http_headers({
-                "Accept-Language": "en-US,en;q=0.9",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-                "Referer": "https://www.google.com/"
-            })
-            
-            try:
-                print(f"Navigating to URL: {url}")
-                await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        try:
+            async with async_playwright() as p:
+                # Launch browser in headless mode with specific flags for Docker/Render compatibility
+                browser = await p.chromium.launch(
+                    headless=True,
+                    args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"]
+                )
+                context = await browser.new_context(
+                    user_agent=self.user_agents[0],
+                    viewport={"width": 1280, "height": 800}
+                )
+                page = await context.new_page()
                 
-                # Wait for title element to load
+                # Set extra headers to simulate a normal browser request
+                await page.set_extra_http_headers({
+                    "Accept-Language": "en-US,en;q=0.9",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+                    "Referer": "https://www.google.com/"
+                })
+                
                 try:
-                    await page.wait_for_selector("#productTitle", timeout=10000)
-                except Exception:
-                    print("Warning: #productTitle selector not found within timeout. Attempting parsing anyway.")
-                
-                html_content = await page.content()
-                
-                # Save debug HTML if scraping fails
-                if "productTitle" not in html_content:
-                    with open("debug.html", "w", encoding="utf-8") as f:
-                        f.write(html_content)
-                    print("Saved HTML to debug.html for inspection.")
+                    print(f"Navigating to URL: {url}")
+                    await page.goto(url, wait_until="domcontentloaded", timeout=30000)
                     
-                await browser.close()
-                
-                return self.parse_html(html_content)
-                
-            except Exception as e:
-                await browser.close()
-                print(f"Error during page navigation/scraping: {e}")
-                return {"error": str(e)}
+                    # Wait for title element to load
+                    try:
+                        await page.wait_for_selector("#productTitle", timeout=10000)
+                    except Exception:
+                        print("Warning: #productTitle selector not found within timeout. Attempting parsing anyway.")
+                    
+                    html_content = await page.content()
+                    
+                    # Save debug HTML if scraping fails
+                    if "productTitle" not in html_content:
+                        with open("debug.html", "w", encoding="utf-8") as f:
+                            f.write(html_content)
+                        print("Saved HTML to debug.html for inspection.")
+                        
+                    await browser.close()
+                    return self.parse_html(html_content)
+                    
+                except Exception as e:
+                    await browser.close()
+                    raise e
+        except Exception as e:
+            print(f"Error during page navigation/scraping: {e}")
+            return {"error": str(e)}
 
     def parse_html(self, html_content: str) -> dict:
         """
