@@ -1,5 +1,5 @@
 # 使用 Playwright 官方 Python 基础镜像，它预装了 Python、Chromium 浏览器以及运行所需的所有系统依赖
-FROM mcr.microsoft.com/playwright/python:v1.40.0-jammy
+FROM mcr.microsoft.com/playwright/python:v1.61.0-jammy
 
 # 设置工作目录
 WORKDIR /code
