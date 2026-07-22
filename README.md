@@ -1,66 +1,66 @@
-# Amazon 商品分析与短视频文案生成器
+# Amazon Product Analyzer & Short Video Script Generator
 
-这是一个出于个人兴趣开发的辅助小工具，主要用于帮助自己和有需要的朋友快速分析亚马逊商品信息，并自动生成适合短视频播报的口播文案与配音试听。
+A fun side-project built to analyze Amazon product pages, extract market insights, and automatically generate engaging short-video scripts with text-to-speech audio previews.
 
-> **项目说明**：本项目纯属个人探索与兴趣实践，代码和功能尚有许多可以优化和完善的地方。非常欢迎有兴趣的朋友体验、提出建议，或者一起探讨交流！
-
----
-
-## 💡 主要功能
-
-- **商品信息解析**：支持输入亚马逊商品链接自动提取页面信息，同时也支持手动粘贴页面文本作为备用模式。
-- **深度市场洞察**：利用大模型分析商品的目标受众、典型使用场景、用户痛点与核心卖点。
-- **短视频口播生成**：提供激情带货、专业客观、生活种草、幽默吐槽等多种文案风格，控制在 150 字以内的短视频口播结构（包含黄金 5 秒钩子、主体内容与 Call to Action）。
-- **语音在线试听**：支持语音合成与流式朗读，提供多种配音角色与特色方言试听及音频下载。
+> **Project Note**: This is a personal hobby project created for exploration and learning. There are plenty of areas for improvement! Feedback, ideas, and suggestions are always welcome.
 
 ---
 
-## 🚀 快速开始
+## 💡 Key Features
 
-### 1. 克隆项目与安装依赖
+- **Product Parsing**: Automatically extract product details from Amazon URLs, with a manual fallback mode for pasting page text/HTML directly.
+- **Market Insights**: Leverage LLMs (Gemini) to deduce target audiences, typical usage scenarios, customer pain points, and core selling propositions.
+- **Short Video Scripts**: Generate oral scripts tailored to various styles (enthusiastic, professional, storytelling, or humorous), formatted within 150 characters (Hook, Body, and Call-to-Action).
+- **Audio Previews**: Integrated neural text-to-speech (Edge TTS) for streaming audio playback, multiple voice characters, and MP3 downloads.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone & Install Dependencies
 
 ```bash
 git clone https://github.com/YOUR_GITHUB_USERNAME/Amazon_Product_Tool.git
 cd Amazon_Product_Tool
 
-# 创建并激活虚拟环境
+# Create & activate a virtual environment
 python -m venv venv
 # Windows: venv\Scripts\activate
 # Linux/macOS: source venv/bin/activate
 
-# 安装依赖
+# Install requirements
 pip install -r requirements.txt
 playwright install chromium
 ```
 
-### 2. 配置环境变量
+### 2. Environment Configuration
 
-复制 `.env.example` 为 `.env` 并填写你的 Gemini API 密钥：
+Copy `.env.example` to `.env` and set your Gemini API key:
 
 ```env
 GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
-### 3. 启动服务
+### 3. Run the App
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-启动后在浏览器访问 `http://127.0.0.1:8000` 即可体验。
+Open `http://127.0.0.1:8000` in your browser to try it out!
 
 ---
 
-## 💬 交流与讨论
+## 💬 Community & Discussions
 
-这个项目目前还处于个人折腾阶段，如果你在体验过程中遇到了问题，或者有任何好的想法（比如支持更多的抓取渠道、优化文案生成 prompt、增加新的配音风格等），非常欢迎交流：
+This project is open-ended and constantly evolving. If you run into issues or have ideas for improvement (e.g., supporting additional e-commerce sites, refining script generation prompts, or adding new voice features), feel free to connect:
 
-- 提交 **Issues** 提出问题或功能建议
-- 参与 **Discussions** 探讨有趣的玩法与后续规划
-- 欢迎提交 **PR** 一起完善代码！
+- Open an **Issue** to report bugs or request features
+- Start a thread in **Discussions** to share ideas
+- Submit a **Pull Request** to help improve the project!
 
 ---
 
-## 📄 开源协议
+## 📄 License
 
-本项目采用 [MIT License](LICENSE) 许可协议。
+Distributed under the [MIT License](LICENSE).
