@@ -70,15 +70,15 @@ def main():
     else:
         print("PASS: Schema check passed. All required fields are present.")
         
-    # 2. Word count check (Chinese characters limit: 150)
-    full_script = result.get("full_script", "")
-    char_count = len(full_script.replace(" ", "").replace("\n", ""))
-    print(f"Full Script Length: {char_count} characters (limit: 150)")
-    if char_count > 150:
-        print(f"FAIL: Oral script exceeds the 150-character limit.")
+    # 2. Word count check (English words limit: 150)
+    full_script = (result.get("full_script") or "").strip()
+    word_count = len(full_script.split()) if full_script else 0
+    print(f"Full Script Word Count: {word_count} words (limit: 150)")
+    if word_count > 150:
+        print(f"FAIL: Voiceover script exceeds the 150-word limit.")
         sys.exit(1)
     else:
-        print("PASS: Oral script word count is within the 150-character limit.")
+        print("PASS: Voiceover script word count is within the 150-word limit.")
         
     # 3. Hook existence check
     hook = result.get("video_hook", "")

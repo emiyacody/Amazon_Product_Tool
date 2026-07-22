@@ -38,7 +38,7 @@ class AnalyzeRequest(BaseModel):
 
 class TTSRequest(BaseModel):
     text: str
-    voice: Optional[str] = "zh-CN-XiaoxiaoNeural"
+    voice: Optional[str] = "en-US-AvaNeural"
 
 def get_cache_path(key: str) -> str:
     return os.path.join(CACHE_DIR, f"{key}.json")

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon 智能商品分析与口播生成工具</title>
+    <title>Amazon AI Product Analyzer & Video Script Generator</title>
     <!-- Google Fonts for premium typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,7 @@
                 <i class="fa-brands fa-amazon logo-icon"></i>
                 <span class="logo-text">Amazon <span class="highlight">Analyzer</span></span>
             </div>
-            <p class="subtitle">智能提炼商品核心信息 · 深度分析痛点卖点 · 一键生成短视频口播文案</p>
+            <p class="subtitle">Smart Product Feature Extraction · Deep Market & Persona Insights · One-Click Viral Short Video Voiceover Scripts</p>
         </header>
 
         <!-- Main Content Grid -->
@@ -37,36 +37,36 @@
             <section class="control-panel card">
                 <div class="card-header">
                     <i class="fa-solid fa-sliders header-icon"></i>
-                    <h2>控制台</h2>
+                    <h2>Control Panel</h2>
                 </div>
                 
                 <form id="analyze-form" class="analyze-form">
                     <!-- URL Input field -->
                     <div class="input-group" id="url-group">
                         <label for="url-input">
-                            <i class="fa-solid fa-link"></i> 亚马逊商品链接
+                            <i class="fa-solid fa-link"></i> Amazon Product URL
                         </label>
-                        <input type="url" id="url-input" placeholder="请粘贴亚马逊商品链接 (e.g. https://www.amazon.com/dp/...)" autocomplete="off">
+                        <input type="url" id="url-input" placeholder="Paste Amazon link (e.g. https://www.amazon.com/dp/...)" autocomplete="off">
                     </div>
 
                     <!-- Toggle for manual paste -->
                     <div class="toggle-container">
                         <button type="button" id="toggle-paste-btn" class="toggle-btn">
-                            <i class="fa-solid fa-code"></i> 切换至网页内容粘贴模式 (备用)
+                            <i class="fa-solid fa-code"></i> Switch to Raw Content / HTML Paste Mode (Fallback)
                         </button>
                     </div>
 
                     <!-- Raw HTML/Text Input field (Hidden by default) -->
                     <div class="input-group hidden" id="raw-text-group">
                         <label for="raw-text-input">
-                            <i class="fa-solid fa-file-code"></i> 商品页面文本/HTML内容
+                            <i class="fa-solid fa-file-code"></i> Product Page HTML / Raw Text
                         </label>
-                        <textarea id="raw-text-input" rows="8" placeholder="如果自动抓取失败，请直接复制亚马逊商品详情页内容或HTML源码并粘贴到这里..."></textarea>
+                        <textarea id="raw-text-input" rows="8" placeholder="If auto-scraping fails, copy and paste the product details or HTML source code directly here..."></textarea>
                     </div>
 
                     <!-- Submit Button -->
                     <button type="submit" id="submit-btn" class="submit-btn">
-                        <span>开始智能分析</span>
+                        <span>Analyze Product</span>
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                     </button>
                 </form>
@@ -77,11 +77,11 @@
                         <div class="spinner"></div>
                     </div>
                     <div class="loading-status">
-                        <p id="status-text">正在准备分析通道...</p>
+                        <p id="status-text">Preparing analysis pipeline...</p>
                         <div class="progress-steps">
-                            <div class="step" id="step-scrape"><i class="fa-solid fa-circle-notch fa-spin"></i> 提取网页信息...</div>
-                            <div class="step" id="step-ai"><i class="fa-solid fa-circle-notch fa-spin"></i> 唤醒 Gemini 深度研判...</div>
-                            <div class="step" id="step-format"><i class="fa-solid fa-circle-notch fa-spin"></i> 编排口播文案...</div>
+                            <div class="step" id="step-scrape"><i class="fa-solid fa-circle-notch fa-spin"></i> Scraping product details...</div>
+                            <div class="step" id="step-ai"><i class="fa-solid fa-circle-notch fa-spin"></i> Gemini AI analyzing product...</div>
+                            <div class="step" id="step-format"><i class="fa-solid fa-circle-notch fa-spin"></i> Formatting voiceover script...</div>
                         </div>
                     </div>
                 </div>
@@ -93,8 +93,8 @@
                 <div id="placeholder-card" class="card placeholder-card">
                     <div class="placeholder-content">
                         <i class="fa-solid fa-chart-line placeholder-icon"></i>
-                        <h3>等待分析数据</h3>
-                        <p>请在左侧控制台输入亚马逊商品链接或粘贴页面内容，系统将自动输出多维度商品洞察与短视频口播文案。</p>
+                        <h3>Awaiting Product Link</h3>
+                        <p>Enter an Amazon product URL or paste page content in the control panel to generate market insights and short video scripts.</p>
                     </div>
                 </div>
 
@@ -105,8 +105,8 @@
                     <div class="card script-card glow-card">
                         <div class="card-header">
                             <i class="fa-solid fa-video header-icon highlight-color"></i>
-                            <h2>短视频口播文案</h2>
-                            <span class="char-counter" id="char-counter">0 / 150 字</span>
+                            <h2>Short Video Script</h2>
+                            <span class="char-counter" id="char-counter">0 / 150 words</span>
                         </div>
                         
                         <div class="script-display-wrapper">
@@ -120,15 +120,15 @@
                             <!-- Detailed script split breakdown -->
                             <div class="script-breakdown">
                                 <div class="breakdown-item">
-                                    <span class="badge badge-hook">黄金5秒钩子</span>
+                                    <span class="badge badge-hook">5s Hook</span>
                                     <p id="hook-content"></p>
                                 </div>
                                 <div class="breakdown-item">
-                                    <span class="badge badge-body">核心内容</span>
+                                    <span class="badge badge-body">Core Pitch</span>
                                     <p id="body-content"></p>
                                 </div>
                                 <div class="breakdown-item">
-                                    <span class="badge badge-cta">行动呼吁</span>
+                                    <span class="badge badge-cta">Call to Action</span>
                                     <p id="cta-content"></p>
                                 </div>
                             </div>
@@ -138,17 +138,17 @@
                         <div class="style-selector-container">
                             <div class="style-selector-group">
                                 <label for="style-select">
-                                    <i class="fa-solid fa-wand-magic-sparkles"></i> 文案风格
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Script Style
                                 </label>
                                 <select id="style-select" class="style-select">
-                                    <option value="enthusiastic" selected>激情带货风 (热情高亢 · 强力推荐)</option>
-                                    <option value="professional">专业客观风 (理智冷静 · 参数测评)</option>
-                                    <option value="storytelling">生活种草风 (温和亲切 · 日常分享)</option>
-                                    <option value="humorous">幽默搞笑风 (风趣自嘲 · 吐槽反转)</option>
+                                    <option value="enthusiastic" selected>High-Energy Hype (TikTok / Viral Promo)</option>
+                                    <option value="professional">Tech & Product Reviewer (Analytical / Objective)</option>
+                                    <option value="storytelling">Relatable Lifestyle (Personal Vlog / UGC)</option>
+                                    <option value="humorous">Witty & Satirical (Funny / Relatable Twist)</option>
                                 </select>
                             </div>
                             <button id="regenerate-btn" class="action-btn secondary style-regen-btn">
-                                <i class="fa-solid fa-rotate"></i> 重新生成文案
+                                <i class="fa-solid fa-rotate"></i> Regenerate Script
                             </button>
                         </div>
 
@@ -156,26 +156,26 @@
                         <div class="tts-container">
                             <div class="voice-selector-group">
                                 <label for="voice-select">
-                                    <i class="fa-solid fa-microphone-lines"></i> 配音角色
+                                    <i class="fa-solid fa-microphone-lines"></i> Voiceover Actor
                                 </label>
                                 <select id="voice-select" class="voice-select">
-                                    <option value="zh-CN-XiaoxiaoNeural" selected>晓晓 (温柔女声 · 推荐/好物)</option>
-                                    <option value="zh-CN-YunxiNeural">云希 (活力男声 · 评测/带货)</option>
-                                    <option value="zh-CN-YunjianNeural">云健 (稳重男声 · 科普/宣讲)</option>
-                                    <option value="zh-CN-liaoning-XiaobeiNeural">东北大妹子 (幽默方言 · 搞怪趣味)</option>
-                                    <option value="zh-CN-shaanxi-XiaoniNeural">陕西秦腔女声 (特色方言 · 泥土气息)</option>
+                                    <option value="en-US-AvaNeural" selected>Ava (US Female · Energetic & Friendly)</option>
+                                    <option value="en-US-AndrewNeural">Andrew (US Male · Professional & Warm)</option>
+                                    <option value="en-US-EmmaNeural">Emma (US Female · Calm & Conversational)</option>
+                                    <option value="en-US-BrianNeural">Brian (US Male · Confident Tech Reviewer)</option>
+                                    <option value="en-US-GuyNeural">Guy (US Male · Casual & Casual Vlog)</option>
                                 </select>
                             </div>
                             
                             <div class="script-actions">
                                 <button id="copy-btn" class="action-btn primary">
-                                    <i class="fa-solid fa-copy"></i> 一键复制口播
+                                    <i class="fa-solid fa-copy"></i> Copy Script
                                 </button>
                                 <button id="speak-btn" class="action-btn secondary">
-                                    <i class="fa-solid fa-play"></i> 朗读试听
+                                    <i class="fa-solid fa-play"></i> Preview Audio
                                 </button>
                                 <button id="download-btn" class="action-btn download-btn" disabled>
-                                    <i class="fa-solid fa-download"></i> 下载音频
+                                    <i class="fa-solid fa-download"></i> Download MP3
                                 </button>
                             </div>
                         </div>
@@ -187,23 +187,23 @@
                         <div class="card details-card">
                             <div class="card-header">
                                 <i class="fa-solid fa-circle-info header-icon"></i>
-                                <h2>商品基本参数</h2>
+                                <h2>Product Overview</h2>
                             </div>
                             <div class="info-list">
                                 <div class="info-item">
-                                    <span class="info-label">商品名称:</span>
+                                    <span class="info-label">Product Name:</span>
                                     <span class="info-value" id="res-name"></span>
                                 </div>
                                 <div class="info-item">
-                                    <span class="info-label">所属品类:</span>
+                                    <span class="info-label">Category:</span>
                                     <span class="info-value" id="res-category"></span>
                                 </div>
                                 <div class="info-item">
-                                    <span class="info-label">参考价格:</span>
+                                    <span class="info-label">Price:</span>
                                     <span class="info-value highlight-price" id="res-price"></span>
                                 </div>
                                 <div class="info-item spec-list-item">
-                                    <span class="info-label">核心参数/功能:</span>
+                                    <span class="info-label">Key Features & Specs:</span>
                                     <ul class="features-list" id="res-features">
                                         <!-- Will be populated dynamically -->
                                     </ul>
@@ -215,23 +215,23 @@
                         <div class="card insights-card">
                             <div class="card-header">
                                 <i class="fa-solid fa-brain header-icon"></i>
-                                <h2>商品深度洞察</h2>
+                                <h2>Market & Persona Insights</h2>
                             </div>
                             <div class="insight-sections">
                                 <div class="insight-block">
-                                    <h3><i class="fa-solid fa-users"></i> 目标受众群体</h3>
+                                    <h3><i class="fa-solid fa-users"></i> Target Audience</h3>
                                     <div class="tag-container" id="res-users"></div>
                                 </div>
                                 <div class="insight-block">
-                                    <h3><i class="fa-solid fa-location-dot"></i> 典型使用场景</h3>
+                                    <h3><i class="fa-solid fa-location-dot"></i> Key Usage Scenarios</h3>
                                     <div class="tag-container" id="res-scenarios"></div>
                                 </div>
                                 <div class="insight-block">
-                                    <h3><i class="fa-solid fa-triangle-exclamation"></i> 用户痛点解决</h3>
+                                    <h3><i class="fa-solid fa-triangle-exclamation"></i> Customer Pain Points Solved</h3>
                                     <ul class="insights-bullets" id="res-pain-points"></ul>
                                 </div>
                                 <div class="insight-block">
-                                    <h3><i class="fa-solid fa-award"></i> 核心差异化卖点</h3>
+                                    <h3><i class="fa-solid fa-award"></i> Unique Selling Propositions (USPs)</h3>
                                     <ul class="insights-bullets" id="res-selling-points"></ul>
                                 </div>
                             </div>

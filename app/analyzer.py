@@ -25,19 +25,19 @@ class ProductAnalyzer:
         """
         model = genai.GenerativeModel(self.model_name)
         
-        # Mapping copywriting styles to specific prompt guidance
+        # Mapping copywriting styles to specific prompt guidance in English for US market
         style_prompts = {
-            "enthusiastic": "激情带货风：用极具煽动性和热情的口吻，强调核心痛点、震撼效果和立即行动的号召（多使用感叹号，如“家人们冲它！”“买它就对了！”）。",
-            "professional": "专业客观风：用冷静、客观、理性的测评人语气，侧重于技术参数、材质工艺、真实使用感受，通过逻辑和对比说服观众。",
-            "storytelling": "生活种草风：用亲近、平实、闺蜜/老友日常分享的口吻，从具体生活痛点场景切入，像讲故事一样自然带出产品的使用体验。",
-            "humorous": "幽默搞笑风：用风趣、吐槽、自嘲的幽默口吻，放大日常使用中的尴尬或烦恼场景，将产品作为搞笑反转后的“救星”引出。"
+            "enthusiastic": "High-Energy Hype / TikTok Viral Tone: Energetic, enthusiastic, and persuasive. Uses engaging phrases like 'You guys need to see this!', 'Stop scrolling!', and strong calls to action.",
+            "professional": "Tech & Product Reviewer Tone: Calm, articulate, and objective. Focuses on specs, build quality, real-world performance, and logical comparisons.",
+            "storytelling": "Relatable Lifestyle / UGC Vlog Tone: Warm, personal, and conversational. Feels like a friend sharing an honest recommendation from an everyday struggle or routine.",
+            "humorous": "Witty & Satirical Tone: Humorous, self-deprecating, and funny. Highlights everyday annoyances before revealing the product as the ultimate unexpected hero."
         }
         style_instruction = style_prompts.get(style, style_prompts["enthusiastic"])
         
         # Prepare the prompt detailing constraints and instructions
         prompt = f"""
-        You are a seasoned product marketing expert and viral short video copywriter.
-        Analyze the following Amazon product data and output a structured analysis.
+        You are an expert US e-commerce product marketer and viral short-form video copywriter (TikTok, Instagram Reels, YouTube Shorts).
+        Analyze the following Amazon product data and output a structured analysis tailored for the US market.
         
         --- Scraped Product Data ---
         Product Title: {product_data.get('title', '')}
@@ -49,13 +49,13 @@ class ProductAnalyzer:
         ----------------------------
         
         Instructions:
-        1. Extract the product name, category, price, and core features.
-        2. Deduce target users, realistic usage scenarios, core user pain points, and key selling points.
-        3. Write a short video oral script in Chinese:
-           - The complete script ('full_script') MUST be 150 Chinese characters or less in total.
+        1. Extract the product name, category, price, and core features in concise English.
+        2. Identify target users, realistic usage scenarios, core user pain points, and key unique selling points for US consumers.
+        3. Write a high-converting short video voiceover script in natural American English:
+           - The complete script ('full_script') MUST be 150 words or less in total (approx. 45-60 seconds when spoken).
            - Write the script in the following specific style: {style_instruction}
-           - The script MUST begin with a powerful hook in the first 5 seconds ('video_hook') to grab the user's attention.
-           - Keep the tone colloquial, energetic, and natural, matching the style of popular short-form videos.
+           - The script MUST begin with a powerful hook in the first 5 seconds ('video_hook') to immediately stop the scroll.
+           - Keep the language natural, punchy, conversational, and trendy for US social media audiences.
            - Provide the hook, body, and CTA separately, as well as combined in 'full_script'.
         """
         

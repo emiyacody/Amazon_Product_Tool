@@ -54,12 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
             urlGroup.classList.add("hidden");
             rawTextGroup.classList.remove("hidden");
             urlInput.value = "";
-            togglePasteBtn.innerHTML = '<i class="fa-solid fa-link"></i> 切换至链接提取模式';
+            togglePasteBtn.innerHTML = '<i class="fa-solid fa-link"></i> Switch to URL Extraction Mode';
         } else {
             urlGroup.classList.remove("hidden");
             rawTextGroup.classList.add("hidden");
             rawTextInput.value = "";
-            togglePasteBtn.innerHTML = '<i class="fa-solid fa-code"></i> 切换至网页内容粘贴模式 (备用)';
+            togglePasteBtn.innerHTML = '<i class="fa-solid fa-code"></i> Switch to Raw Content / HTML Paste Mode (Fallback)';
         }
     });
 
@@ -72,11 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
         
         // Validation checks
         if (!isPasteMode && !url) {
-            alert("请输入亚马逊商品链接！");
+            alert("Please enter an Amazon product URL!");
             return;
         }
         if (isPasteMode && !rawText) {
-            alert("请粘贴商品页面HTML或文本内容！");
+            alert("Please paste the product page HTML or raw text content!");
             return;
         }
 
@@ -90,13 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
         resetLoadingSteps();
         updateLoadingStep(stepScrape, "active");
         
-        statusText.textContent = isPasteMode ? "正在解析文本内容..." : "正在连接亚马逊抓取商品详情...";
+        statusText.textContent = isPasteMode ? "Parsing raw content..." : "Connecting to Amazon to extract product details...";
 
         // Set up fake timing offsets to show smooth visual status transitions
         let statusTimeout = setTimeout(() => {
             updateLoadingStep(stepScrape, "completed");
             updateLoadingStep(stepAI, "active");
-            statusText.textContent = "商品细节提取成功，正在唤醒 Gemini 进行多维商业分析...";
+            statusText.textContent = "Product details extracted! Gemini AI is conducting deep market analysis...";
         }, isPasteMode ? 1000 : 7000); // Scraping takes longer than local paste parsing
 
         let apiErrorOccurred = false;
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
             updateLoadingStep(stepScrape, "completed");
             updateLoadingStep(stepAI, "completed");
             updateLoadingStep(stepFormat, "active");
-            statusText.textContent = "深度研判完毕，正在编排并校对口播文案...";
+            statusText.textContent = "Analysis complete! Generating and checking voiceover script...";
 
             setTimeout(() => {
                 updateLoadingStep(stepFormat, "completed");
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
             clearTimeout(statusTimeout);
             apiErrorOccurred = true;
-            alert(`分析失败: ${error.message}`);
+            alert(`Analysis failed: ${error.message}`);
             
             // Reset loaders
             loadingContainer.classList.add("hidden");
@@ -158,17 +158,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const rawText = rawTextInput.value.trim();
 
         if (!isPasteMode && !url) {
-            alert("请输入亚马逊商品链接！");
+            alert("Please enter an Amazon product URL!");
             return;
         }
         if (isPasteMode && !rawText) {
-            alert("请粘贴商品页面HTML或文本内容！");
+            alert("Please paste the product page HTML or raw text content!");
             return;
         }
 
         // Disable UI controls
         regenerateBtn.disabled = true;
-        regenerateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 正在生成...';
+        regenerateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
         submitBtn.disabled = true;
         
         // Reset audio state since script is changing
@@ -200,10 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
             
         } catch (error) {
             console.error("Regeneration error:", error);
-            alert(`重新生成文案失败: ${error.message}`);
+            alert(`Script regeneration failed: ${error.message}`);
         } finally {
             regenerateBtn.disabled = false;
-            regenerateBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> 重新生成文案';
+            regenerateBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> Regenerate Script';
             submitBtn.disabled = false;
         }
     });
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         navigator.clipboard.writeText(text).then(() => {
             const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> 已复制到剪贴板';
+            copyBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Copied to Clipboard';
             copyBtn.style.background = "#10b981";
             setTimeout(() => {
                 copyBtn.innerHTML = originalText;
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 2000);
         }).catch(err => {
             console.error("Clipboard copy failed:", err);
-            alert("复制失败，请手动选择复制！");
+            alert("Copy failed. Please manually select and copy the text!");
         });
     });
 
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
             currentAudio = null;
         }
         isSpeaking = false;
-        speakBtn.innerHTML = '<i class="fa-solid fa-play"></i> 朗读试听';
+        speakBtn.innerHTML = '<i class="fa-solid fa-play"></i> Preview Audio';
         speakBtn.classList.remove("primary");
     }
 
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Otherwise, fetch TTS stream from backend
         try {
             speakBtn.disabled = true;
-            speakBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> 合成中...';
+            speakBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Generating Audio...';
             
             const response = await fetch("/api/tts", {
                 method: "POST",
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!response.ok) {
-                throw new Error("语音合成失败");
+                throw new Error("Speech synthesis failed");
             }
 
             audioBlob = await response.blob();
@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
             playLoadedAudio();
         } catch (error) {
             console.error("TTS error:", error);
-            alert("语音生成失败，请稍后重试！");
+            alert("Speech generation failed. Please try again!");
             stopAudio();
         } finally {
             speakBtn.disabled = false;
@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         currentAudio.onplay = () => {
             isSpeaking = true;
-            speakBtn.innerHTML = '<i class="fa-solid fa-stop"></i> 停止播放';
+            speakBtn.innerHTML = '<i class="fa-solid fa-stop"></i> Stop Audio';
             speakBtn.classList.add("primary");
         };
 
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         currentAudio.onerror = (e) => {
             console.error("Audio playback error:", e);
-            alert("音频播放出错！");
+            alert("Audio playback error!");
             stopAudio();
         };
 
@@ -337,9 +337,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!audioBlob || !audioUrl) return;
         
         // Extract product name or first 15 characters for file name
-        let rawName = resName.textContent || "口播配音";
+        let rawName = resName.textContent || "Voiceover";
         let cleanName = rawName.replace(/[\\/:*?"<>|]/g, "").trim().substring(0, 15);
-        let fileName = `${cleanName}_口播配音.mp3`;
+        let fileName = `${cleanName}_Voiceover.mp3`;
 
         const a = document.createElement("a");
         a.href = audioUrl;
@@ -396,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 resFeatures.appendChild(li);
             });
         } else {
-            resFeatures.innerHTML = "<li>暂无特定核心参数提取</li>";
+            resFeatures.innerHTML = "<li>No specific features extracted</li>";
         }
 
         // 2. Audience & Scenario Tags
@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 resUsers.appendChild(span);
             });
         } else {
-            resUsers.innerHTML = "<span class='tag'>通用受众</span>";
+            resUsers.innerHTML = "<span class='tag'>General Audience</span>";
         }
 
         resScenarios.innerHTML = "";
@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 resScenarios.appendChild(span);
             });
         } else {
-            resScenarios.innerHTML = "<span class='tag'>多场景适用</span>";
+            resScenarios.innerHTML = "<span class='tag'>Multi-Scenario</span>";
         }
 
         // 3. Pain Points and Selling Points
@@ -434,10 +434,11 @@ document.addEventListener("DOMContentLoaded", () => {
         bodyContent.textContent = data.video_body || "";
         ctaContent.textContent = data.video_cta || "";
         
-        // Character counter
-        const charCount = (data.full_script || "").replace(/\s+/g, "").length;
-        charCounter.textContent = `${charCount} / 150 字`;
-        if (charCount > 150) {
+        // Word counter for English text (count words separated by whitespace)
+        const fullScriptText = (data.full_script || "").trim();
+        const wordCount = fullScriptText ? fullScriptText.split(/\s+/).length : 0;
+        charCounter.textContent = `${wordCount} / 150 words`;
+        if (wordCount > 150) {
             charCounter.style.color = "#ef4444";
         } else {
             charCounter.style.color = "";
@@ -453,7 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ulElem.appendChild(li);
             });
         } else {
-            ulElem.innerHTML = "<li>暂无分析结果</li>";
+            ulElem.innerHTML = "<li>No details available</li>";
         }
     }
 });
