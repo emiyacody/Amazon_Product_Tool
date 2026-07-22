@@ -67,7 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         
-        const url = urlInput.value.trim();
+        let url = urlInput.value.trim();
+        if (url && !/^https?:\/\//i.test(url)) {
+            url = "https://" + url;
+        }
         const rawText = rawTextInput.value.trim();
         
         // Validation checks
@@ -154,7 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle Script Regeneration (Style change)
     regenerateBtn.addEventListener("click", async () => {
-        const url = urlInput.value.trim();
+        let url = urlInput.value.trim();
+        if (url && !/^https?:\/\//i.test(url)) {
+            url = "https://" + url;
+        }
         const rawText = rawTextInput.value.trim();
 
         if (!isPasteMode && !url) {
